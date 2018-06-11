@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "addon",
-      "sources": [ "addon.cpp", "projAPI.cpp" ]
+      "sources": [ "projAPI.cpp" ]
     }
   ]
 }
