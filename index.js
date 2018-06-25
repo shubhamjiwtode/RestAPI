@@ -15,6 +15,7 @@ var user_routes=require('./routes/UserRoutes');
 
 //for logger
 app.use(morgan('dev'));
+
 //to make Storage folder static
 app.use(express.static('Storage'));
 //for parsing url body

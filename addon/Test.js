@@ -44,3 +44,6 @@ var pay={"filename":"gggg",
 }
 console.log(rainfall.checkinM(pay));
 
+var db=rainfall.database();
+
+console.log(db);

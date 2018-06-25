@@ -15,6 +15,7 @@
 #include "rainfall.h"
 #include "addon.h"
 #include "checkin.h"
+#include "checkout.h"
 
 using namespace std;
 using namespace v8;
@@ -24,13 +25,15 @@ unordered_map<string,payload> db;
 
 void Method(const v8::FunctionCallbackInfo<Value>& args);
 void checkinMethod(const v8::FunctionCallbackInfo<Value>& args);
-
+void getDBMethod(const v8::FunctionCallbackInfo<Value>& args);
+void checkoutMethod(const v8::FunctionCallbackInfo<Value>& args);
 
 void init(Handle <Object> exports, Handle<Object> module) {
 	
     NODE_SET_METHOD(exports, "hello", Method);
     NODE_SET_METHOD(exports, "checkinM", checkinMethod);
-   
+    NODE_SET_METHOD(exports,"database",getDBMethod);
+    NODE_SET_METHOD(exports,"checkoutM",checkinMethod);
 }
 
 
@@ -61,7 +64,25 @@ Isolate* isolate = args.GetIsolate();
   args.GetReturnValue().Set(source);
 }
 
+void getDBMethod(const v8::FunctionCallbackInfo<Value>& args){
+  Isolate* isolate = args.GetIsolate();
+  dbcore dbcore_(db);
+  std::vector<string> v;
+  v=dbcore_.getkeys();
+  Local<Array> result_list = Array::New(isolate);
+  for (int i=0;i<v.size();i++)
+  {
+     v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate,v[i].c_str());
+    /* code */
+    result_list->Set(i,source);
+  }
+  args.GetReturnValue().Set(result_list);
+}
 
+void checkoutMethod(const v8::FunctionCallbackInfo<Value>& args){
+  checkout checkout_(db);
+  //checkout_.makecheckout();
+}
 
 
 NODE_MODULE(addon, init)
